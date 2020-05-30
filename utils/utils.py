@@ -64,9 +64,9 @@ def ap_per_class(tp, conf, pred_cls, target_cls):
     Source: https://github.com/rafaelpadilla/Object-Detection-Metrics.
     # Arguments
         tp:    True positives (list).
-        conf:  Objectness value from 0-1 (list).
+        conf:  Objectness value from 0-1 (list). #(tensor?)
         pred_cls: Predicted object classes (list).
-        target_cls: True object classes (list).
+        target_cls: True object classes (list). Ground Truth
     # Returns
         The average precision as computed in py-faster-rcnn.
     """
@@ -74,7 +74,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls):
     # Sort by objectness
     i = np.argsort(-conf)
     tp, conf, pred_cls = tp[i], conf[i], pred_cls[i]
-
+	#根据Conf 将TP与pred_cls 排序
     # Find unique classes
     unique_classes = np.unique(target_cls)
 
@@ -82,7 +82,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls):
     ap, p, r = [], [], []
     for c in tqdm.tqdm(unique_classes, desc="Computing AP"):
         i = pred_cls == c
-        n_gt = (target_cls == c).sum()  # Number of ground truth objects
+        n_gt = (target_cls == c).sum()  # Number of ground truth objects 我们不知道样本里有多少类
         n_p = i.sum()  # Number of predicted objects
 
         if n_p == 0 and n_gt == 0:
@@ -91,9 +91,10 @@ def ap_per_class(tp, conf, pred_cls, target_cls):
             ap.append(0)
             r.append(0)
             p.append(0)
-        else:
+        else:                    
             # Accumulate FPs and TPs
-            fpc = (1 - tp[i]).cumsum()
+            fpc = (1 - tp[i]).cumsum() #cumsum返回累计和
+			#算出Fp
             tpc = (tp[i]).cumsum()
 
             # Recall
