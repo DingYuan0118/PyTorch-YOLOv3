@@ -113,7 +113,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls):
     f1 = 2 * p * r / (p + r + 1e-16)
 
     return p, r, ap, f1, unique_classes.astype("int32")
-
+#complete
 
 def compute_ap(recall, precision):
     """ Compute the average precision, given the recall and precision curves.
@@ -141,7 +141,7 @@ def compute_ap(recall, precision):
     # and sum (\Delta recall) * prec
     ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
     return ap
-
+#Complete
 
 def get_batch_statistics(outputs, targets, iou_threshold):
     """ Compute true positives, predicted scores and predicted labels per sample """
